@@ -2,17 +2,47 @@
 
 namespace App\Models;
 
-use App\Traits\HasCreatorAndUpdater;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
+use App\Traits\HasCreatorAndUpdater;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class File extends Model
 {
     use HasFactory, NodeTrait, HasCreatorAndUpdater;
-
+    // create folder
     public function isOwnedBy($userId): bool
     {
         return $this->created_by == $userId;
     }
+    //add path start
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(File::class, 'parent_id');
+    }
+
+    public function isRoot()
+    {
+        return $this->parent_id === null;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (!$model->parent) {
+                return;
+            }
+            $model->path = (!$model->parent->isRoot() ? $model->parent->path . '/' : '') . Str::slug($model->name);
+        });
+    }
+
+    //add path end
 }
