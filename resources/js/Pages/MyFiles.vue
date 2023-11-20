@@ -30,6 +30,7 @@
                 <tr
                     v-for="file of files.data"
                     :key="file.id"
+                    @dblclick="openFolder(file)"
                     class="border-b transition duration-300 ease-in-out hover:bg-blue-100 cursor-pointer"
                 >
                     <td
@@ -51,12 +52,27 @@
                 </tr>
             </tbody>
         </table>
+        <div
+            v-if="!files.data.length"
+            class="py-8 text-center text-sm text-gray-400"
+        >
+            There is no data in this folder
+        </div>
     </AuthenticatedLayout>
 </template>
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { router, useForm, usePage } from '@inertiajs/vue3'
 
 const { files } = defineProps({
     files: Object,
 })
+
+function openFolder(file) {
+    if (!file.is_folder) {
+        return
+    }
+
+    router.visit(route('myFiles', { folder: file.path }))
+}
 </script>

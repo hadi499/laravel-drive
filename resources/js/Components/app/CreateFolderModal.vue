@@ -53,6 +53,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const form = useForm({
     name: '',
+    parent_id: null,
 })
 
 const page = usePage()
@@ -71,6 +72,7 @@ function onShow() {
 }
 
 function createFolder() {
+    form.parent_id = page.props.folder.id
     form.post(route('folder.create'), {
         preserveScroll: true,
         onSuccess: () => {

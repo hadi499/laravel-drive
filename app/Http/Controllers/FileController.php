@@ -11,10 +11,19 @@ use App\Http\Resources\FileResource;
 
 class FileController extends Controller
 {
-    public function myFiles()
+    public function myFiles(string $folder = null)
     {
+        if ($folder) {
+            $folder = File::query()
+                ->where('created_by', Auth::id())
+                ->where('path', $folder)
+                ->firstOrFail();
+        }
 
-        $folder = $this->getRoot();
+        if (!$folder) {
+            $folder = $this->getRoot();
+        }
+
 
         $files = File::query()
             ->where('parent_id', $folder->id)
@@ -24,14 +33,14 @@ class FileController extends Controller
             ->paginate(10);
         $files = FileResource::collection($files);
 
-        return Inertia::render('MyFiles', compact('files'));
+        return Inertia::render('MyFiles', compact('files', 'folder'));
     }
 
     public function createFolder(StoreFolderRequest $request)
     {
         $data = $request->validated();
         $parent = $request->parent;
-        dd($data);
+
 
         if (!$parent) {
             $parent = $this->getRoot();
