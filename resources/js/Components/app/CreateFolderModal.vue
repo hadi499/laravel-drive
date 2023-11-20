@@ -54,6 +54,9 @@ import PrimaryButton from '@/Components/PrimaryButton.vue'
 const form = useForm({
     name: '',
 })
+
+const page = usePage()
+
 const folderNameInput = ref(null)
 
 // Props & Emit
@@ -62,6 +65,7 @@ const { modelValue } = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+
 function onShow() {
     nextTick(() => folderNameInput.value.focus())
 }
