@@ -38,31 +38,6 @@
                     </div>
                 </li>
             </ol>
-
-            <div class="flex">
-                <label class="flex items-center mr-3">
-                    Only Favourites
-                    <Checkbox
-                        @change="showOnlyFavourites"
-                        v-model:checked="onlyFavourites"
-                        class="ml-2"
-                    />
-                </label>
-                <ShareFilesButton
-                    :all-selected="allSelected"
-                    :selected-ids="selectedIds"
-                />
-                <DownloadFilesButton
-                    :all="allSelected"
-                    :ids="selectedIds"
-                    class="mr-2"
-                />
-                <DeleteFilesButton
-                    :delete-all="allSelected"
-                    :delete-ids="selectedIds"
-                    @delete="onDelete"
-                />
-            </div>
         </nav>
         <table class="min-w-full">
             <thead class="bg-gray-100 border-b">
@@ -113,6 +88,11 @@
                     >
                         {{ file.updated_at }}
                     </td>
+                    <td
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                        {{ file.size }}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -133,7 +113,7 @@ import { Link } from '@inertiajs/vue3'
 const { files } = defineProps({
     files: Object,
     folder: Object,
-    ancestors: Array,
+    ancestors: Object,
 })
 
 function openFolder(file) {
