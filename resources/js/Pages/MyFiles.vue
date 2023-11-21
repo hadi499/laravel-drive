@@ -75,6 +75,7 @@
                     <td
                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center"
                     >
+                        <FileIcon :file="file" />
                         {{ file.name }}
                     </td>
 
@@ -108,6 +109,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { HomeIcon } from '@heroicons/vue/20/solid'
 import { router, useForm, usePage } from '@inertiajs/vue3'
+import FileIcon from '@/Components/app/FileIcon.vue'
 import { Link } from '@inertiajs/vue3'
 
 const { files } = defineProps({
